@@ -124,23 +124,23 @@ output "invoice_processing_system_summary" {
     upload_bucket         = module.s3_buckets.raw_bucket_name
     processed_data_bucket = module.s3_buckets.processed_bucket_name
     database_table        = module.dynamodb.table_name
-    
+
     # Processing Functions
     textract_processor    = module.lambda.textract_processor_name
     data_storage_function = module.lambda.store_extracted_data_name
-    
+
     # Workflow
     step_functions_workflow = module.step_functions.state_machine_name
-    
+
     # Notifications
     notification_topic = module.sns.topic_name
-    
+
     # Instructions
     usage_instructions = {
-      upload_files = "Upload PDF/image invoices to s3://${module.s3_buckets.raw_bucket_name}/"
+      upload_files       = "Upload PDF/image invoices to s3://${module.s3_buckets.raw_bucket_name}/"
       monitor_processing = "Check Step Functions console for workflow execution status"
-      view_results = "Processed data stored in s3://${module.s3_buckets.processed_bucket_name}/ and DynamoDB table '${module.dynamodb.table_name}'"
-      notifications = "Email notifications sent to configured address via SNS topic '${module.sns.topic_name}'"
+      view_results       = "Processed data stored in s3://${module.s3_buckets.processed_bucket_name}/ and DynamoDB table '${module.dynamodb.table_name}'"
+      notifications      = "Email notifications sent to configured address via SNS topic '${module.sns.topic_name}'"
     }
   }
 }

@@ -129,13 +129,13 @@ output "step_functions_role_arn" {
 output "invoice_processing_summary" {
   description = "Summary of the complete invoice processing system"
   value = {
-    raw_upload_bucket    = aws_s3_bucket.raw_invoice_bucket.bucket
-    processed_data_bucket = aws_s3_bucket.processed_invoice_bucket.bucket
-    textract_processor   = aws_lambda_function.textract_processor.function_name
-    data_storage_function = aws_lambda_function.store_extracted_data.function_name
+    raw_upload_bucket       = aws_s3_bucket.raw_invoice_bucket.bucket
+    processed_data_bucket   = aws_s3_bucket.processed_invoice_bucket.bucket
+    textract_processor      = aws_lambda_function.textract_processor.function_name
+    data_storage_function   = aws_lambda_function.store_extracted_data.function_name
     step_functions_workflow = aws_sfn_state_machine.invoice_automation.name
-    notification_topic   = aws_sns_topic.invoice_processing_notifications.name
-    database_table      = aws_dynamodb_table.lambda_dynamodb.name
+    notification_topic      = aws_sns_topic.invoice_processing_notifications.name
+    database_table          = aws_dynamodb_table.lambda_dynamodb.name
   }
 }
 

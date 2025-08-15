@@ -21,12 +21,12 @@ variable "lambda_dynamoDB" {
 }
 
 variable "lambda_aurora_mysql_name" {
-  type = string
+  type    = string
   default = "aurora-cluster-db"
 }
 
 variable "lambda_aurora_mysql_database_name" {
-  type = string
+  type    = string
   default = "aurorainvoicedb"
 }
 

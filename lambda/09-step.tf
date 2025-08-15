@@ -123,14 +123,14 @@ resource "aws_sfn_state_machine" "invoice_automation" {
         Type = "Choice"
         Choices = [
           {
-            Variable        = "$.statusCode"
-            NumericEquals   = 200
-            Next            = "SendSuccessNotification"
+            Variable      = "$.statusCode"
+            NumericEquals = 200
+            Next          = "SendSuccessNotification"
           },
           {
-            Variable        = "$.statusCode"
-            NumericEquals   = 409
-            Next            = "DuplicateInvoiceNotification"
+            Variable      = "$.statusCode"
+            NumericEquals = 409
+            Next          = "DuplicateInvoiceNotification"
           }
         ]
         Default = "ProcessingFailed"

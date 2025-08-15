@@ -48,7 +48,7 @@ resource "aws_iam_role_policy" "lambda_role_policy" {
           "dynamodb:Query",
           "dynamodb:Scan"
         ]
-        Effect   = "Allow"
+        Effect = "Allow"
         Resource = [
           aws_dynamodb_table.lambda_dynamodb.arn,
           "${aws_dynamodb_table.lambda_dynamodb.arn}/*"
@@ -78,7 +78,7 @@ resource "aws_iam_role_policy" "lambda_role_policy" {
           "s3:PutObject",
           "s3:DeleteObject"
         ]
-        Effect   = "Allow"
+        Effect = "Allow"
         Resource = [
           "${aws_s3_bucket.raw_invoice_bucket.arn}/*",
           "${aws_s3_bucket.processed_invoice_bucket.arn}/*",
@@ -104,7 +104,7 @@ resource "aws_iam_role_policy" "lambda_role_policy" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ]
-        Effect   = "Allow"
+        Effect = "Allow"
         Resource = [
           "arn:aws:secretsmanager:${var.tf_region}:*:secret:${var.lambda_aurora_mysql_name}-master-password*"
         ]
@@ -153,11 +153,11 @@ data "archive_file" "store_extracted_data_zip" {
 resource "aws_lambda_function" "validate_invoice" {
   filename         = data.archive_file.validate_invoice_zip.output_path
   function_name    = "validate-invoice"
-  role            = aws_iam_role.lambda_role.arn
-  handler         = "validate-invoice.handler"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "validate-invoice.handler"
   source_code_hash = data.archive_file.validate_invoice_zip.output_base64sha256
-  runtime         = "nodejs20.x"
-  timeout         = 30
+  runtime          = "nodejs20.x"
+  timeout          = 30
 
   environment {
     variables = {
@@ -176,16 +176,16 @@ resource "aws_lambda_function" "validate_invoice" {
 resource "aws_lambda_function" "process_invoice" {
   filename         = data.archive_file.process_invoice_zip.output_path
   function_name    = "process-invoice"
-  role            = aws_iam_role.lambda_role.arn
-  handler         = "process-invoice.handler"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "process-invoice.handler"
   source_code_hash = data.archive_file.process_invoice_zip.output_base64sha256
-  runtime         = "nodejs20.x"
-  timeout         = 30
+  runtime          = "nodejs20.x"
+  timeout          = 30
 
   environment {
     variables = {
-      ENVIRONMENT        = "production"
-      LOG_LEVEL         = "info"
+      ENVIRONMENT         = "production"
+      LOG_LEVEL           = "info"
       DYNAMODB_TABLE_NAME = aws_dynamodb_table.lambda_dynamodb.name
     }
   }
@@ -200,11 +200,11 @@ resource "aws_lambda_function" "process_invoice" {
 resource "aws_lambda_function" "send_notification" {
   filename         = data.archive_file.send_notification_zip.output_path
   function_name    = "send-notification"
-  role            = aws_iam_role.lambda_role.arn
-  handler         = "send-notification.handler"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "send-notification.handler"
   source_code_hash = data.archive_file.send_notification_zip.output_base64sha256
-  runtime         = "nodejs20.x"
-  timeout         = 30
+  runtime          = "nodejs20.x"
+  timeout          = 30
 
   environment {
     variables = {
@@ -224,17 +224,17 @@ resource "aws_lambda_function" "send_notification" {
 resource "aws_lambda_function" "textract_processor" {
   filename         = data.archive_file.textract_processor_zip.output_path
   function_name    = "textract-processor"
-  role            = aws_iam_role.lambda_role.arn
-  handler         = "textract-processor.handler"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "textract-processor.handler"
   source_code_hash = data.archive_file.textract_processor_zip.output_base64sha256
-  runtime         = "nodejs20.x"
-  timeout         = var.textract_lambda_timeout
+  runtime          = "nodejs20.x"
+  timeout          = var.textract_lambda_timeout
 
   environment {
     variables = {
-      ENVIRONMENT        = "production"
-      LOG_LEVEL         = "info"
-      SNS_TOPIC_ARN     = aws_sns_topic.invoice_processing_notifications.arn
+      ENVIRONMENT         = "production"
+      LOG_LEVEL           = "info"
+      SNS_TOPIC_ARN       = aws_sns_topic.invoice_processing_notifications.arn
       STORAGE_LAMBDA_NAME = "store-extracted-data"
     }
   }
@@ -249,19 +249,19 @@ resource "aws_lambda_function" "textract_processor" {
 resource "aws_lambda_function" "store_extracted_data" {
   filename         = data.archive_file.store_extracted_data_zip.output_path
   function_name    = "store-extracted-data"
-  role            = aws_iam_role.lambda_role.arn
-  handler         = "store-extracted-data.handler"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "store-extracted-data.handler"
   source_code_hash = data.archive_file.store_extracted_data_zip.output_base64sha256
-  runtime         = "nodejs20.x"
-  timeout         = 60
+  runtime          = "nodejs20.x"
+  timeout          = 60
 
   environment {
     variables = {
-      ENVIRONMENT          = "production"
-      LOG_LEVEL           = "info"
-      DYNAMODB_TABLE_NAME = aws_dynamodb_table.lambda_dynamodb.name
+      ENVIRONMENT           = "production"
+      LOG_LEVEL             = "info"
+      DYNAMODB_TABLE_NAME   = aws_dynamodb_table.lambda_dynamodb.name
       PROCESSED_BUCKET_NAME = aws_s3_bucket.processed_invoice_bucket.bucket
-      SNS_TOPIC_ARN       = aws_sns_topic.invoice_processing_notifications.arn
+      SNS_TOPIC_ARN         = aws_sns_topic.invoice_processing_notifications.arn
     }
   }
 

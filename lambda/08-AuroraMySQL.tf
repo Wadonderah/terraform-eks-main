@@ -15,7 +15,7 @@ resource "random_password" "aurora_password" {
 resource "aws_secretsmanager_secret" "aurora_password" {
   name        = "${var.lambda_aurora_mysql_name}-master-password"
   description = "Master password for Aurora MySQL cluster"
-  
+
   tags = {
     Environment = "production"
     Application = "invoice-automation"
@@ -31,23 +31,23 @@ resource "aws_secretsmanager_secret_version" "aurora_password" {
 resource "aws_rds_cluster" "lambda_aurora_mysql" {
   cluster_identifier      = var.lambda_aurora_mysql_name
   engine                  = "aurora-mysql"
-  engine_version          = "8.0.mysql_aurora.3.04.0"  # Updated to latest stable version
+  engine_version          = "8.0.mysql_aurora.3.04.0" # Updated to latest stable version
   availability_zones      = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1], data.aws_availability_zones.available.names[2]]
   database_name           = var.lambda_aurora_mysql_database_name
   master_username         = "invoice"
   master_password         = random_password.aurora_password.result
   backup_retention_period = 5
   preferred_backup_window = "07:00-09:00"
-  
+
   # Enable encryption at rest
   storage_encrypted = true
-  
+
   # Enable deletion protection for production
-  deletion_protection = false  # Set to true for production
-  
+  deletion_protection = false # Set to true for production
+
   # Skip final snapshot for development (change for production)
   skip_final_snapshot = true
-  
+
   tags = {
     Environment = "production"
     Application = "invoice-automation"
