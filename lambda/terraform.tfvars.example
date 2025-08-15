@@ -1,0 +1,28 @@
+# Example Terraform Variables Configuration
+# Copy this file to terraform.tfvars and update with your values
+
+# AWS Region (Canada Central)
+tf_region = "ca-central-1"
+
+# Your AWS profile (usually "default")
+tf_profile = "default"
+
+# Email for notifications (REQUIRED - update with your email)
+notification_email = "your-email@example.com"
+
+# S3 Bucket Names (will have random suffix added)
+raw_invoice_bucket_name = "invoice-uploads"
+processed_invoice_bucket_name = "processed-invoices"
+
+# DynamoDB Table Name
+lambda_dynamoDB = "lambda_invoice_dynamoDB"
+
+# SNS Topic Name
+sns_topic_name = "invoice-processing-notifications"
+
+# Lambda Timeout (seconds)
+textract_lambda_timeout = 300
+
+# Aurora MySQL Configuration (if using)
+lambda_aurora_mysql_name = "aurora-cluster-db"
+lambda_aurora_mysql_database_name = "aurorainvoicedb"
