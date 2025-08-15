@@ -1,7 +1,3 @@
-# Data sources to get current AWS account and region
-data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
-
 # Step Functions IAM Role
 resource "aws_iam_role" "step_functions_role" {
   name = "step-functions-invoice-automation-role"
@@ -249,5 +245,6 @@ resource "aws_cloudwatch_log_group" "step_functions_logs" {
   tags = {
     Environment = "production"
     Application = "invoice-automation"
+    ManagedBy   = "terraform"
   }
 }

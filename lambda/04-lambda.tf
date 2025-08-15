@@ -16,7 +16,10 @@ resource "aws_iam_role" "lambda_role" {
   })
 
   tags = {
-    tag-key = "lambda_role"
+    tag-key     = "lambda_role"
+    Environment = "production"
+    Application = "invoice-automation"
+    ManagedBy   = "terraform"
   }
 }
 
@@ -95,6 +98,16 @@ resource "aws_iam_role_policy" "lambda_role_policy" {
         ]
         Effect   = "Allow"
         Resource = "*"
+      },
+      {
+        Action = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ]
+        Effect   = "Allow"
+        Resource = [
+          "arn:aws:secretsmanager:${var.tf_region}:*:secret:${var.lambda_aurora_mysql_name}-master-password*"
+        ]
       }
     ]
   })

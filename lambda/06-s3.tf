@@ -8,7 +8,9 @@ resource "aws_s3_bucket" "lambda_s3_bucket" {
 
   tags = {
     Name        = "lambda_s3_bucket"
-    Environment = "Dev"
+    Environment = "production"
+    Application = "invoice-automation"
+    ManagedBy   = "terraform"
   }
 }
 
@@ -20,6 +22,8 @@ resource "aws_s3_bucket" "raw_invoice_bucket" {
     Name        = "Raw Invoice Uploads"
     Environment = "production"
     Purpose     = "invoice-processing"
+    Application = "invoice-automation"
+    ManagedBy   = "terraform"
   }
 }
 
@@ -31,6 +35,8 @@ resource "aws_s3_bucket" "processed_invoice_bucket" {
     Name        = "Processed Invoice Data"
     Environment = "production"
     Purpose     = "invoice-processing"
+    Application = "invoice-automation"
+    ManagedBy   = "terraform"
   }
 }
 

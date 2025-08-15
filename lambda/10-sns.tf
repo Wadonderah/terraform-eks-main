@@ -6,6 +6,8 @@ resource "aws_sns_topic" "invoice_processing_notifications" {
     Name        = "Invoice Processing Notifications"
     Environment = "production"
     Purpose     = "invoice-processing"
+    Application = "invoice-automation"
+    ManagedBy   = "terraform"
   }
 }
 

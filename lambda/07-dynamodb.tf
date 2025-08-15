@@ -1,5 +1,3 @@
-data "aws_region" "current" {}
-
 resource "aws_dynamodb_table" "lambda_dynamoDB" {
   billing_mode     = "PAY_PER_REQUEST"
   hash_key         = "customerId"
@@ -23,6 +21,8 @@ resource "aws_dynamodb_table" "lambda_dynamoDB" {
     type = "S"
   }
 
+  # Only keep replicas if you need global distribution
+  # Remove these if you only need single region deployment
   replica {
     region_name = "us-east-1"
   }
@@ -35,16 +35,16 @@ resource "aws_dynamodb_table" "lambda_dynamoDB" {
     name               = "InvoiceTitleIndex"
     hash_key           = "invoiceNumber"
     range_key          = "customerName"
-    write_capacity     = 10
-    read_capacity      = 10
     projection_type    = "INCLUDE"
     non_key_attributes = ["customerId"]
+    # Removed read_capacity and write_capacity for PAY_PER_REQUEST billing mode
   }
 
   tags = {
     Architect   = "lambda_dynamoDB"
     Environment = "production"
+    Application = "invoice-automation"
+    ManagedBy   = "terraform"
   }
-
 }
 

@@ -139,19 +139,34 @@ output "invoice_processing_summary" {
   }
 }
 
-output "lambda_invoke_command" {
-  value = "aws lambda invoke --function-name ${aws_lambda_function.lambda_function.function_name} output.json"
+# Removed invalid output reference - aws_lambda_function.lambda_function doesn't exist
+# Use specific function outputs above instead
+
+
+# Aurora MySQL Outputs
+output "rds_cluster_identifier" {
+  description = "Aurora MySQL cluster identifier"
+  value       = aws_rds_cluster.lambda_aurora_mysql.cluster_identifier
 }
 
-
 output "rds_writer_endpoint" {
-  value = aws_rds_cluster.lambda_aurora_mysql.endpoint
+  description = "Aurora MySQL writer endpoint"
+  value       = aws_rds_cluster.lambda_aurora_mysql.endpoint
 }
 
 # Reader endpoint (load-balanced read-only)
 output "rds_reader_endpoint" {
-  value = aws_rds_cluster.lambda_aurora_mysql.reader_endpoint
+  description = "Aurora MySQL reader endpoint"
+  value       = aws_rds_cluster.lambda_aurora_mysql.reader_endpoint
 }
 
-#rds_reader_endpoint = "aurora-cluster-db.cluster-ro-cl8m2462crgo.ca-central-1.rds.amazonaws.com"
-#rds_writer_endpoint = "aurora-cluster-db.cluster-cl8m2462crgo.ca-central-1.rds.amazonaws.com"
+output "rds_database_name" {
+  description = "Aurora MySQL database name"
+  value       = aws_rds_cluster.lambda_aurora_mysql.database_name
+}
+
+output "aurora_secret_arn" {
+  description = "ARN of the Aurora MySQL password secret"
+  value       = aws_secretsmanager_secret.aurora_password.arn
+  sensitive   = true
+}
