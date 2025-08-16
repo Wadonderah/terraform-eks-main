@@ -21,15 +21,15 @@ resource "aws_dynamodb_table" "lambda_dynamoDB" {
     type = "S"
   }
 
-  # Only keep replicas if you need global distribution
-  # Remove these if you only need single region deployment
-  replica {
-    region_name = "us-east-1"
-  }
-  replica {
-    region_name    = "eu-west-1"
-    propagate_tags = true
-  }
+  # Global replicas removed for cost optimization
+  # Uncomment below if you need global distribution:
+  # replica {
+  #   region_name = "us-east-1"
+  # }
+  # replica {
+  #   region_name    = "eu-west-1"
+  #   propagate_tags = true
+  # }
 
   global_secondary_index {
     name               = "InvoiceTitleIndex"

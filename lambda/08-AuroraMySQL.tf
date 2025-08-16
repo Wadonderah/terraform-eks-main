@@ -43,10 +43,11 @@ resource "aws_rds_cluster" "lambda_aurora_mysql" {
   storage_encrypted = true
 
   # Enable deletion protection for production
-  deletion_protection = false # Set to true for production
+  deletion_protection = true # Enabled for production safety
 
-  # Skip final snapshot for development (change for production)
-  skip_final_snapshot = true
+  # Enable final snapshot for production (change for production)
+  skip_final_snapshot       = false
+  final_snapshot_identifier = "${var.lambda_aurora_mysql_name}-final-snapshot"
 
   tags = {
     Environment = "production"
